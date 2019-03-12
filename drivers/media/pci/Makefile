@@ -16,6 +16,7 @@ obj-y        +=	ttpci/		\
 		smipcie/	\
 		netup_unidvb/	\
 		tbsecp3/	\
+		stavix		\
 		tbscapture/	\
 		tbsmod/		\
 		intel/
