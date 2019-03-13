@@ -15,10 +15,7 @@ obj-y        +=	ttpci/		\
 		saa7146/	\
 		smipcie/	\
 		netup_unidvb/	\
-		tbsecp3/	\
-		stavix		\
-		tbscapture/	\
-		tbsmod/		\
+		stavix/		\
 		intel/
 
 obj-$(CONFIG_VIDEO_IVTV) += ivtv/
