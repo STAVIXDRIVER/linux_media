@@ -4,15 +4,7 @@
 #
 
 obj-y        +=	ttpci/		\
-		b2c2/		\
-		pluto2/		\
-		dm1105/		\
-		pt1/		\
-		pt3/		\
-		mantis/		\
-		ngene/		\
 		ddbridge/	\
-		saa7146/	\
 		smipcie/	\
 		netup_unidvb/	\
 		stavix/		\
