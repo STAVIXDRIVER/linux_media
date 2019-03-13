@@ -5,4 +5,5 @@ obj-$(CONFIG_DVB_STAVIX) += stavix.o
 ccflags-y += -Idrivers/media/tuners
 ccflags-y += -Idrivers/media/dvb-core
 ccflags-y += -Idrivers/media/dvb-frontends
+ccflags-y += -Idrivers/media/dvb-frontends/stid135
 
