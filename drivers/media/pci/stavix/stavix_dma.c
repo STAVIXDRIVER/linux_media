@@ -104,47 +104,20 @@ static void replace_tasklet_schedule(struct stavix_dev *dev)
 	u8* data;
 	u8 tid,k;
 	int i;
-	u32 cdesc;
-	int print_flag=1;
-//###########debug_define	
-	u8 tid_debug;
-	u32 cnt = 0;
-//################ end
-	spin_lock(&dev->adap_lock);		
-	cdesc = pci_read(SG_DMA_BASE, SG_DMA_REG_CURDESC);
-	k = (cdesc - AXI_PCIE_SG_ADDR)/SEG_SIZE/BD_NUM;
-	if(k ==adapter->dma.buf_cnt)
-	print_flag = 0;	
-	adapter->dma.buf_cnt = k;
-	if(k>7)
-	printk(KERN_INFO"k>7,k=%d",k);	
-	if(k==0)
-	k=0x04;
-	else if(k==1)
-	k=0x05;
-	else if(k==2)
-	k=0x06;
-	else if(k==3)
-	k=0x07;
-	else 
-	k=k-4;
-	
+	spin_lock(&dev->adap_lock);
+	k = adapter->dma.buf_cnt & 0x07;
 	data = adapter->dma.buf[k];
 
 	for(i = 0; i < TS_NUM; i++) {
-		tid = data[0]&0x07;
-//debug_start
-		tid_debug = data[0]&0xFF;
-		if(tid_debug == 0x47){
-		cnt++;
-		}
-		if((i == (TS_NUM-1))&&cnt&&print_flag)
-		printk(KERN_INFO"total %d packets wrong\n",cnt);
-//debug_end		
+		//tid = data[0]&0x07;	
+		tid = data[0];
 		data[0] = 0x47;	
+		if((tid <= 0x07)&&((~data[0]) >> 7)){
 		dvb_dmx_swfilter_packets(&(dev->adapter[tid].demux), data, 1);
+		}
 		data =  data + 192;
 	}
+	adapter->dma.buf_cnt++;
 	spin_unlock(&dev->adap_lock);	
 }
 
