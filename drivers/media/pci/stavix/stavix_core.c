@@ -40,7 +40,7 @@ void stavix_gpio_set_pin(struct stavix_dev *dev,
 
 static irqreturn_t stavix_irq_handler(int irq, void *dev_id) 
 {
-	struct hm610_dev *dev = (struct stavix_dev *) dev_id;
+	struct stavix_dev *dev = (struct stavix_dev *) dev_id;
 	u32 stat;
 	irqreturn_t ret = IRQ_NONE;
 	stat = pci_read(STAVIX_INT_BASE, STAVIX_INT_IPR);
@@ -99,7 +99,7 @@ static void stavix_adapters_detach(struct stavix_dev *dev)
 		adapter = &dev->adapter[i];		
 		if (adapter->nr == -1)
 			continue;		
-		hm610_dvb_exit(adapter);
+		stavix_dvb_exit(adapter);
 	}
 }
 
