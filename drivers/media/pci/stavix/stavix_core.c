@@ -145,7 +145,7 @@ static bool stavix_enable_msi(struct pci_dev *pci_dev, struct stavix_dev *dev)
 
 	
 	err = request_threaded_irq(pci_dev->irq, stavix_irq_handler,stavix_irq_handler_threaded,
-			IRQF_SHARED, "hm610", dev);
+			IRQF_SHARED, "stavix", dev);
 	if (err) {
 		
 		dev_err(&dev->pci_dev->dev,
@@ -210,7 +210,7 @@ static int stavix_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		goto err2;
 
 
-	ret = hm610_i2c_init(dev);
+	ret = stavix_i2c_init(dev);
 	if (ret < 0){
 		goto err3;
 	}
