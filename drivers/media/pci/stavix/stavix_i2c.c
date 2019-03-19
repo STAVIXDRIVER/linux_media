@@ -20,7 +20,7 @@ static inline void xiic_irq_dis(struct stavix_i2c *i2c, u32 mask)
 {
 	struct stavix_dev *dev = i2c->dev;
 	u32 ier = pci_read(STAVIX_I2C_BASE, STAVIX_IIER_OFFSET);
-	pci_write(SYAVIX_I2C_BASE, STAVIX_IIER_OFFSET, ier & ~mask);
+	pci_write(STAVIX_I2C_BASE, STAVIX_IIER_OFFSET, ier & ~mask);
 
 }
 
