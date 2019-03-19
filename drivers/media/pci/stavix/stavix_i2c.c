@@ -414,7 +414,7 @@ static int stavix_i2c_register(struct stavix_i2c *bus)
 	mutex_init(&bus->lock);
 
 	i2c_adap = &bus->i2c_adap;
-	strcpy(i2c_adap->name, "hm610");
+	strcpy(i2c_adap->name, "stavix");
 	i2c_adap->algo = &hm610_i2c_algo_template;
 	i2c_adap->algo_data = (void*) bus;
 	i2c_adap->dev.parent = &dev->pci_dev->dev;
