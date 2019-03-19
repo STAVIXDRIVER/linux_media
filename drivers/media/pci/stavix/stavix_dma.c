@@ -225,10 +225,10 @@ static void axi_pci_trans(struct stavix_dev *dev)
 	
 	pntr0 =  (size_t) (gBDBufferHW);
 	pntr1 =  (size_t) (gDataBufferHW);	
-    pci_write (HM610_PCIE_BASE, AXIBAR2PCIEBAR_0L, (pntr0 >> 0)  & 0xFFFFFFFF); 
-    pci_write (HM610_PCIE_BASE, AXIBAR2PCIEBAR_0U, (pntr0 >> 32) & 0xFFFFFFFF); 
-    pci_write (HM610_PCIE_BASE, AXIBAR2PCIEBAR_1L, (pntr1 >> 0)  & 0xFFFFFFFF); 
-    pci_write (HM610_PCIE_BASE, AXIBAR2PCIEBAR_1U, (pntr1 >> 32) & 0xFFFFFFFF); 
+    pci_write (STAVIX_PCIE_BASE, AXIBAR2PCIEBAR_0L, (pntr0 >> 0)  & 0xFFFFFFFF); 
+    pci_write (STAVIX_PCIE_BASE, AXIBAR2PCIEBAR_0U, (pntr0 >> 32) & 0xFFFFFFFF); 
+    pci_write (STAVIX_PCIE_BASE, AXIBAR2PCIEBAR_1L, (pntr1 >> 0)  & 0xFFFFFFFF); 
+    pci_write (STAVIX_PCIE_BASE, AXIBAR2PCIEBAR_1U, (pntr1 >> 32) & 0xFFFFFFFF); 
 	
 }
 
