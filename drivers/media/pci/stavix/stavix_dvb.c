@@ -11,6 +11,7 @@
 
 #include "stavix.h"
 #include "mxl58x.h"
+#include "stid135.h"
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
@@ -21,6 +22,24 @@ struct sec_priv {
 	int (*set_voltage)(struct dvb_frontend *fe,
 			   enum fe_sec_voltage voltage);
 };
+
+static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg,u32 *buf)
+{
+	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
+	struct stavix_dev *dev = i2c_adap->dev;
+	//*buf = pci_read(STAVIX_GPIO_BASE,reg);
+	printk(KERN_INFO"spi_read\n");
+	return ;
+}
+
+static void stavix_spi_read(struct i2c_adapter *i2c,u8 reg,u32 *buf)
+{
+	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
+	struct stavix_dev *dev = i2c_adap->dev;
+	//*buf = pci_read(STAVIX_GPIO_BASE,reg);
+	printk(KERN_INFO"spi_write\n");
+	return ;
+}
 
 static int stavix_set_voltage(struct dvb_frontend* fe,
 		enum fe_sec_voltage voltage)
