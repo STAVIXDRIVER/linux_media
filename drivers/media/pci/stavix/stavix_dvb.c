@@ -23,7 +23,7 @@ struct sec_priv {
 			   enum fe_sec_voltage voltage);
 };
 
-static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg,u32 *buf)
+static void stavix_spi_read(struct i2c_adapter *i2c,u8 reg,u32 *buf)
 {
 	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
 	struct stavix_dev *dev = i2c_adap->dev;
@@ -32,7 +32,7 @@ static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg,u32 *buf)
 	return ;
 }
 
-static void stavix_spi_read(struct i2c_adapter *i2c,u8 reg,u32 *buf)
+static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg,u32 *buf)
 {
 	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
 	struct stavix_dev *dev = i2c_adap->dev;
