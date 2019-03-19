@@ -9,6 +9,7 @@
  * GNU General Public License for more details.
  */
 
+
 #include "stavix.h"
 #include "mxl58x.h"
 #include "stid135.h"
@@ -22,25 +23,23 @@ struct sec_priv {
 	int (*set_voltage)(struct dvb_frontend *fe,
 			   enum fe_sec_voltage voltage);
 };
-
-static void stavix_spi_read(struct i2c_adapter *i2c,u8 reg,u32 *buf)
-{
+static void stavix_spi_read(struct i2c_adapter *i2c,u8 reg, u32 *buf)
+{	
 	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
 	struct stavix_dev *dev = i2c_adap->dev;
-	//*buf = pci_read(STAVIX_GPIO_BASE,reg);
+	//*buf = pci_read(stavix_GPIO_BASE,reg );
 	printk(KERN_INFO"spi_read\n");
+
 	return ;
 }
-
-static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg,u32 *buf)
-{
+static void stavix_spi_write(struct i2c_adapter *i2c,u8 reg, u32 buf)
+{	
 	struct stavix_i2c *i2c_adap = i2c_get_adapdata(i2c);
 	struct stavix_dev *dev = i2c_adap->dev;
-	//*buf = pci_read(STAVIX_GPIO_BASE,reg);
+	//pci_write(stavix_GPIO_BASE,reg,buf);
 	printk(KERN_INFO"spi_write\n");
 	return ;
 }
-
 static int stavix_set_voltage(struct dvb_frontend* fe,
 		enum fe_sec_voltage voltage)
 {
@@ -144,7 +143,7 @@ static int start_feed(struct dvb_demux_feed *dvbdmxfeed)
 
 	if (!adapter->feeds)
 		sg_dma_enable(adapter);
-//	printk(KERN_INFO"__start_feed__\n"); 
+
 	return ++adapter->feeds;
 }
 
@@ -185,14 +184,13 @@ static int max_set_voltage(struct i2c_adapter *i2c,
 		//GPIO_VALUE |= ~STAVIX_GPIO_PIN(rf_in, 0);
 		break;
 	}
-
 	pci_write(STAVIX_GPIO_BASE, 0, GPIO_VALUE);
 	return 0;
 }
 
 
 
-static struct mxl58x_cfg hm610_mxl58x_cfg = {
+static struct mxl58x_cfg stavix_mxl58x_cfg = {
 	.adr		= 0x60,
 	.type		= 0x01,
 	.clk		= 24000000,
@@ -207,9 +205,9 @@ static struct stid135_cfg stavix_stid135_cfg = {
 	.clk		= 25,
 	.ts_mode	= TS_8SER,
 	.set_voltage	= max_set_voltage,
-	.write_propertise = stavix_spi_write,
-	.read_propertise = stavix_spi_read,
-}
+	.write_properties = stavix_spi_write, 
+	.read_properties = stavix_spi_read,
+};
 
 static int stavix_frontend_attach(struct stavix_adapter *adapter)
 {
@@ -223,11 +221,9 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 
 
 	set_mac_address(adapter);
-
 	switch (pci->subsystem_vendor) {
 	case 0x0610:
-
-
+		
 		adapter->fe = dvb_attach(mxl58x_attach, i2c,
 				&stavix_mxl58x_cfg, adapter->nr);
 		if (adapter->fe == NULL)
@@ -237,17 +233,16 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 				"error attaching lnb control on adapter %d\n",
 				adapter->nr);
 		}
+			
 		break;
-
 	case 0x0710:
-
-
+			
 		adapter->fe = dvb_attach(stid135_attach, i2c,
-				&stavix_stid135_cfg, adapter->nr);
+				&stavix_stid135_cfg, adapter->nr, adapter->nr/2);
 		if (adapter->fe == NULL)
 			goto frontend_atach_fail;
-		}
-		break;
+	
+		break; 
 	default:
 		dev_warn(&dev->pci_dev->dev, "unknonw card\n");
 		return -ENODEV;
@@ -347,7 +342,7 @@ int stavix_dvb_init(struct stavix_adapter *adapter)
 		dev_err(&dev->pci_dev->dev, "dvb_net_init failed");
 		goto err5;
 	}
-
+	
 	stavix_frontend_attach(adapter);
 	if (adapter->fe == NULL) {
 		dev_err(&dev->pci_dev->dev, "frontend attach failed\n");
