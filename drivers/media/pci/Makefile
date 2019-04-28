@@ -4,11 +4,23 @@
 #
 
 obj-y        +=	ttpci/		\
+		b2c2/		\
+		pluto2/		\
+		dm1105/		\
+		pt1/		\
+		pt3/		\
+		mantis/		\
+		ngene/		\
 		ddbridge/	\
+		saa7146/	\
 		smipcie/	\
 		netup_unidvb/	\
+		tbsecp3/	\
+		tbscapture/	\
+		tbsmod/		\
 		stavix/		\
 		intel/
+
 
 obj-$(CONFIG_VIDEO_IVTV) += ivtv/
 obj-$(CONFIG_VIDEO_CX18) += cx18/
