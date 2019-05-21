@@ -215,12 +215,17 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 {
 	struct stavix_dev *dev = adapter->dev;
 	struct pci_dev *pci = dev->pci_dev;
-
+	
+	struct si2168_config si2168_config;
+	struct si2157_config si2157_config;
+	struct i2c_board_info info;
+	struct i2c_client *client_demod, *client_tuner;
 
 	struct i2c_adapter *i2c = &adapter->i2c->i2c_adap;
 
 	adapter->fe = NULL;
-
+	adapter->i2c_client_demod = NULL;
+	adapter->i2c_client_tuner = NULL;
 
 	set_mac_address(adapter);
 	switch (pci->subsystem_vendor) {
@@ -247,9 +252,51 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 		break; 
 			
 	case 0x0810:
-		
+		/* attach demod */
+		memset(&si2168_config, 0, sizeof(si2168_config));
+		si2168_config.i2c_adapter = &i2c;
+		si2168_config.fe = &adapter->fe;
+		si2168_config.ts_mode = SI2168_TS_SERIAL;//zc2016/07/20
+		si2168_config.ts_clock_gapped = true;
+		si2168_config.ts_clock_inv=0;//zc2016/07/20
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+		strlcpy(info.type, "si2168", I2C_NAME_SIZE);
+		info.addr = 0x64;
+		info.platform_data = &si2168_config;
+		request_module(info.type);
+		client_demod = i2c_new_device(i2c, &info);
+		if (client_demod == NULL ||
+			client_demod->dev.driver == NULL)
+		    goto frontend_atach_fail;
+		if (!try_module_get(client_demod->dev.driver->owner)) {
+		    i2c_unregister_device(client_demod);
+		    goto frontend_atach_fail;
+		}
+		adapter->i2c_client_demod = client_demod;
+
+		/* attach tuner */
+		memset(&si2157_config, 0, sizeof(si2157_config));
+		si2157_config.fe = adapter->fe;
+		si2157_config.if_port = 1;
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+		strlcpy(info.type, "si2157", I2C_NAME_SIZE);
+		info.addr = 0x60;
+		info.platform_data = &si2157_config;
+		request_module(info.type);
+		client_tuner = i2c_new_device(i2c, &info);
+		if (client_tuner == NULL ||
+			client_tuner->dev.driver == NULL)
+		    goto frontend_atach_fail;
+
+		if (!try_module_get(client_tuner->dev.driver->owner)) {
+		    i2c_unregister_device(client_tuner);
+		    goto frontend_atach_fail;
+		}
+		adapter->i2c_client_tuner = client_tuner;
+		break;
 			
-		
 	default:
 		dev_warn(&dev->pci_dev->dev, "unknonw card\n");
 		return -ENODEV;
@@ -259,7 +306,7 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 	return 0;
 
 frontend_atach_fail:
-
+	//tbsecp3_i2c_remove_clients(adapter);
 	if (adapter->fe != NULL)
 		dvb_frontend_detach(adapter->fe);
 	adapter->fe = NULL;
