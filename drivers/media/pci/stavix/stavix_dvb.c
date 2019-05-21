@@ -13,6 +13,8 @@
 #include "stavix.h"
 #include "mxl58x.h"
 #include "stid135.h"
+#include "si2168.h"
+#include "si2157.h"
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
@@ -243,6 +245,11 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 			goto frontend_atach_fail;
 	
 		break; 
+			
+	case 0x0810:
+		
+			
+		
 	default:
 		dev_warn(&dev->pci_dev->dev, "unknonw card\n");
 		return -ENODEV;
