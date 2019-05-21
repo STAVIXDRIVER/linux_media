@@ -125,6 +125,10 @@ struct stavix_adapter {
 	struct stavix_adap_config *cfg;
 	struct stavix_dev *dev;
 	struct stavix_i2c *i2c;
+	
+	struct i2c_client *i2c_client_demod;
+	struct i2c_client *i2c_client_tuner;
+	
 	struct dvb_adapter dvb_adapter;
 	struct dvb_frontend *fe;
 	struct dvb_demux demux;
