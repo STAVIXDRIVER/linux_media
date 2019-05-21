@@ -233,7 +233,7 @@ static int stavix_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	pci_write(STAVIX_GPIO_BASE, STAVIX_GPIO_TRI, 0x00000000);
 	pci_write(STAVIX_GPIO_BASE, STAVIX_GPIO_DATA, 0x00000000); 
 	mdelay(1);
-	pci_write(STAVIX_GPIO_BASE, STAVIX_GPIO_DATA, 0x000000100); 
+	pci_write(STAVIX_GPIO_BASE, STAVIX_GPIO_DATA, 0x000000300); 
 	mdelay(100);
 
 	ret = stavix_adapters_attach(dev);
