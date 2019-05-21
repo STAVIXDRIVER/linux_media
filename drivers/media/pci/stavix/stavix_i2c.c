@@ -76,6 +76,11 @@ static void xiic_reinit(struct stavix_i2c *i2c)
 	pci_write(STAVIX_I2C_BASE, STAVIX_DGIER_OFFSET, STAVIX_GINTR_ENABLE_MASK);
 
 	xiic_irq_clr_en(i2c, STAVIX_INTR_ARB_LOST_MASK);
+	
+	pci_write(STAVIX_I2C_BASE, 0x128, 0x314);
+	pci_write(STAVIX_I2C_BASE, 0x12C, 0x314);
+	pci_write(STAVIX_I2C_BASE, 0x130, 0x314);
+	pci_write(STAVIX_I2C_BASE, 0x144, 0xD);
 }
 
 static void xiic_deinit(struct stavix_i2c *i2c)
