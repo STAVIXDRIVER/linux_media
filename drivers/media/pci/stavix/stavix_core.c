@@ -320,7 +320,8 @@ static int stavix_resume(struct pci_dev *pdev)
 
 static const struct pci_device_id stavix_id_table[] = {
 	STAVIX_ID(STAVIX_HM610_BOARD),
-	STAVIX_ID(STAVIX_HM610_BOARD),
+	STAVIX_ID(STAVIX_HM710_BOARD),
+	STAVIX_ID(STAVIX_HM810_BOARD),
 	{0}
 };
 MODULE_DEVICE_TABLE(pci, stavix_id_table);
