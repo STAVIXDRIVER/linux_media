@@ -34,6 +34,7 @@
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
+#include <media/dvb_ringbuffer.h>
 #include <media/dvb_net.h>
 #include <media/dvbdev.h>
 #include "stavix_regs.h"
