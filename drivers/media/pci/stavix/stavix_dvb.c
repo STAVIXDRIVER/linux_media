@@ -256,9 +256,9 @@ static int stavix_frontend_attach(struct stavix_adapter *adapter)
 		memset(&si2168_config, 0, sizeof(si2168_config));
 		si2168_config.i2c_adapter = &i2c;
 		si2168_config.fe = &adapter->fe;
-		si2168_config.ts_mode = SI2168_TS_SERIAL;//zc2016/07/20
+		si2168_config.ts_mode = SI2168_TS_SERIAL;
 		si2168_config.ts_clock_gapped = true;
-		si2168_config.ts_clock_inv=0;//zc2016/07/20
+		si2168_config.ts_clock_inv=0;
 
 		memset(&info, 0, sizeof(struct i2c_board_info));
 		strlcpy(info.type, "si2168", I2C_NAME_SIZE);
