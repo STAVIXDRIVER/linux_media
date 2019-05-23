@@ -98,22 +98,16 @@ struct stavix_board stavix_boards[] = {
 	},
 	[STAVIX_HM810_BOARD] = {
 	.name		= "STAVIX HM810 DVB-T/T2/C ",
-	.adapters	= 2,
+	.adapters	= 1,
 	.eeprom_i2c	= 0,
-	//.eeprom_addr	= 0xa0,
+	.eeprom_addr	= 0xa0,
 	.adap_config	= {
 			{
 			.ts_in = 0,
 			.i2c_bus_nr = 0,
-			.gpio.demod_reset.lvl = TBSECP3_GPIODEF_NONE,
-			.gpio.demod_reset.nr  = TBSECP3_GPIO_PIN(0, 0),
-			}, 
-			{
-			.ts_in = 1,
-			.i2c_bus_nr = 1,
-			.gpio.demod_reset.lvl = TBSECP3_GPIODEF_NONE,
-			.gpio.demod_reset.nr  = TBSECP3_GPIO_PIN(2, 0),
-			},
+			.gpio.demod_reset.lvl = STAVIX_GPIODEF_LOW,
+			.gpio.demod_reset.nr  = 8,
+			}
 		}
 	}, 
 };
