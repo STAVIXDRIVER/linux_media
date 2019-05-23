@@ -95,6 +95,8 @@ struct stavix_board {
 struct stavix_i2c {
 	struct stavix_dev 		*dev;
 	struct i2c_adapter 		i2c_adap;
+	struct i2c_client 		*i2c_client;
+	
 	struct mutex 			lock;
 	wait_queue_head_t 		wq;
 	struct i2c_msg			*tx_msg;
