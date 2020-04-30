@@ -111,13 +111,13 @@ static void replace_tasklet_schedule(struct stavix_dev *dev)
 	data = adapter->dma.buf[k];
 
 	for(i = 0; i < TS_NUM; i++) {
-		//tid = data[0]&0x07;
-		tid = data[0];
+		tid = data[0]&0x07;
+		//tid = data[0];
 		data[0] = 0x47;	
-		mark_err = data[1];
-		if((tid <= 0x07) && ((~ mark_err) >> 7)){
+		//mark_err = data[1];
+		//if((tid <= 0x07) && ((~ mark_err) >> 7)){有时候不加载这些通道和数据筛选条件，会好些。所以2020年4月30改回以前的。
 		 dvb_dmx_swfilter_packets(&(dev->adapter[tid].demux), data, 1);
-		}
+		//}
 		data =  data + 192;
 	}
 	adapter->dma.buf_cnt++;
